@@ -31,14 +31,14 @@ proves the claim, one sentence that states it, then an index.
   "Interactive companion to the numopt Python package".
 * **Hero visual:** keep the live `HeroViz`, but give it the README hero's composition: landscape on
   the left, a *small* f(𝐱ₖ) − f⋆ vs k chart (log-log) on the right, both on one clock that is linear
-  in log k (see `make_hero.py`, `k_of_tau`). The README's four methods (gradient descent with Armijo
+  in log k (see `web/src/app/heroClock.ts`). The README's four methods (gradient descent with Armijo
   backtracking, heavy-ball momentum, BFGS, Newton) under its one stopping test, ‖∇f(𝐱ₖ)‖₂ ≤ 10⁻⁸, so
   the visitor sees three different convergence shapes in ten seconds and the lab can replay the
   README figure exactly. The caption states the test. Plays once, holds the last frame, shows a
   replay control and "Open in the lab →" (deep link with the same `?p=&m=` state).
 * **A code card under the CTAs** (JetBrains Mono, surface card): a snippet that runs as shown —
-  `pip install git+https://github.com/saeedahmadicp/numerical_optimization_of_ai` (until the PyPI
-  name `numopt-lab` is reserved; `numopt` on PyPI is another project), `import numopt`,
+  `pip install git+https://github.com/ML-Dev-Hub/numopt` (the distribution
+  is named `numopt-lab`; `numopt` on PyPI is another project), `import numopt`,
   `from numopt import problems`, `numopt.run(...)`, and its real output `(True, 38)`. Researchers
   trust a page that shows the call.
 * **Facts strip** (four columns, Newsreader numerals at 38 px, hairline separators): methods in the

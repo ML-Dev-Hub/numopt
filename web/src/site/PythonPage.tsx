@@ -133,16 +133,16 @@ export default function PythonPage() {
               Install
             </h2>
             <p className={styles.prose}>
-              Python 3.11 or newer; the only runtime dependency is NumPy. The package is installed
-              from GitHub until its PyPI name is settled (<code>numopt</code> on PyPI is another
-              project).
+              Python 3.11 or newer; the only runtime dependency is NumPy. The distribution is named{' '}
+              <code>numopt-lab</code> (<code>numopt</code> on PyPI is another project) and imports
+              as <code>import numopt</code>; install it from GitHub.
             </p>
             <CodeBlock
               label="Shell"
               lines={[
                 { prompt: '$', code: `pip install git+${REPO}` },
                 { prompt: '', code: '# or, to run the tests and the research studies:' },
-                { prompt: '$', code: `git clone ${REPO}.git && cd numerical_optimization_of_ai` },
+                { prompt: '$', code: `git clone ${REPO}.git && cd numopt` },
                 { prompt: '$', code: 'pip install -e ".[dev]"' },
               ]}
             />

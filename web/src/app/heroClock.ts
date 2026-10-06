@@ -1,4 +1,4 @@
-/** The hero's shared clock (docs/brand/scripts/make_hero.py, `k_of_tau`). Pure; tested. */
+/** The hero's shared clock, linear in log k. Pure; tested. */
 export const T_PRE = 0.5;
 export const T_DRAW = 9.0;
 export const T_END = T_PRE + T_DRAW;

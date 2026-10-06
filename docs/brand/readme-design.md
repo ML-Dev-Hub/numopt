@@ -41,65 +41,32 @@ wrong package. Checked on 2026-10-05 through `https://pypi.org/pypi/<name>/json`
   `import numopt`. The other project's module is `NumOpt`; Python imports are case-sensitive, so the
   only clash is a user who installs *both* on a case-insensitive file system (macOS, Windows), where
   the two directories merge. That risk is small; note it in the package's FAQ.
-* **Until the name is reserved,** every install line (README, portal concept) is the name-free
-  `pip install git+https://github.com/saeedahmadicp/numerical_optimization_of_ai`. A
-  `numopt-lab @ git+https://...` line would fail while `pyproject.toml` still says `name = "numopt"`.
-* The rename itself is a one-line change to `[project] name` in `pyproject.toml`, owned by the
-  package team.
+* **Decided (2026-10-06):** `pyproject.toml` names the distribution `numopt-lab`; the import name,
+  the CLI and the repository stay `numopt`. Until a PyPI release exists, every install line is the
+  name-free `pip install git+https://github.com/ML-Dev-Hub/numopt`.
 
 ## The hero
 
-`scripts/make_hero.py` computes everything: it runs `gradient_descent`, `momentum`, `bfgs` and
-`pure_newton` from 𝐱₀ = (−1.2, 1) on Rosenbrock and draws the actual iterates. Changing a method, a
-parameter or the start point regenerates a correct figure; nothing is hand-placed. Choices:
+Revised 2026-10-06 after owner review: the first hero (Rosenbrock, near-square, animated, with an
+off-view Newton step and a convergence axis down to 10⁻²⁴) read as tall and "vertically weird".
 
-* **One stopping test for all four methods:** the first k with ‖∇f(𝐱ₖ)‖₂ ≤ 10⁻⁸, inside one
-  20,000-iteration budget; every other parameter is the registered default. The registered defaults
-  differ (gradient descent and momentum stop at ‖∇f‖₂ ≤ 10⁻⁶; BFGS and Newton at ‖∇f‖∞ ≤ 10⁻⁸), so
-  comparing them as registered would compare different tests. BFGS and Newton run with their
-  internal tolerance at its floor and the trace is cut at the first iterate that passes the common
-  test; the methods are deterministic, so this *is* the run with that test. Results: Newton 6,
-  BFGS 38, heavy-ball momentum 4,128, gradient descent (Armijo backtracking) 15,231 — all converge.
-* **Four methods, four validated colors.** Adam was dropped: it told the same "slow first-order"
-  story as momentum, and a fifth method needed a fifth, unvalidated color (the withdrawn "reference
-  ink"). With four, the lab can replay the README figure exactly.
-* **Legibility at real size.** The wide figure is laid out at 960 × 650 units, so at the 830 px
-  README column 1 unit ≈ 0.86 px and the smallest type (14 units) is 12 px. On a phone the
-  `<picture>` serves a stacked 540 × 1206 variant (17-unit minimum type ≈ 11 px at 360 px). The
-  provenance text is no longer inside the image; the caption carries it.
-* **Nothing hidden.** Gradient descent, the slowest method, is painted last with the thinnest stroke,
-  so it is visible along the whole valley floor. Diamonds mark 𝐱ₖ at k = 10, 10², 10³, 10⁴ on both
-  panels, which ties each method's progress along the valley to the log-k axis.
-* **Equal scale, named axes.** The landscape uses the same scale on x and y (125 units per unit),
-  with *x* and *y* named and ticks outside the frame. The log-k axis says "iteration k ≥ 1", since
-  it cannot show k = 0.
-* **Newton's excursion is shown, not cropped away.** Its second iterate is 𝐱₂ = (0.76, −3.18), far
-  below the view. Both steps through the frame edge are dashed in every frame, an outward chevron
-  marks where 𝐱₁ → 𝐱₂ leaves, an inward (upward) chevron marks where 𝐱₂ → 𝐱₃ comes back, and the
-  label sits at the exit point.
-* **Two panels** — the landscape (where the iterates went) and f(𝐱ₖ) − f⋆ against k on log–log axes
-  (how fast). Quadratic and superlinear convergence appear as different curve shapes, annotated in
-  italics.
-* **Animation on one clock that is linear in log k**, which gives each decade of iterations the same
-  screen time, so the convergence playhead moves at constant speed. It **plays once** (about 9.5 s)
-  and holds a final frame identical to the static figure (brand.md §7 bans endless loops); the
-  heads and playhead leave when the clock stops.
-* **Reduced motion:** the animated SVG contains the static final frame and a
-  `@media (prefers-reduced-motion: reduce)` rule that shows it instead of the animation (confirmed
-  inside `<img>` with Chromium's `--force-prefers-reduced-motion`).
-* **Accessible text** (`<desc>`, alt) uses the brand's typography: U+2212, thousands separators,
-  x₀, 10⁻⁸.
+* **One wide figure** (960 × 394, aspect ≈ 2.4:1): Himmelblau's function from 𝐱₀ = (−3.75, 2.5),
+  where gradient descent (Armijo backtracking), heavy-ball momentum, BFGS and damped Newton take four
+  clearly different routes to the same minimizer 𝐱⋆ ≈ (−2.805, 3.131). Every iterate stays inside
+  the panel (`make_hero.py` asserts it).
+* **Convergence panel plots ‖∇f(𝐱ₖ)‖₂**, the quantity the stopping test reads, on a log-k axis.
+  The dashed stopping line (10⁻⁸) is the floor of the chart, so every curve ends at the line instead
+  of plunging; Newton's steep final step is labelled *quadratic*.
+* **Static**, transparent background (native on GitHub's #ffffff and #0d1117), light and dark, plus
+  a stacked 540 × 876 variant for viewports ≤ 640 px. Real traces from `numopt.run`; the caption
+  states the problem, 𝐱₀ and the single stopping test.
 
 | File | Size | Use |
 |---|---|---|
-| `readme-hero/hero-animated-{light,dark}.svg` | ~345 kB | README default, desktop (SMIL; renders in GitHub's `<img>`) |
-| `readme-hero/hero-stacked-animated-{light,dark}.svg` | ~350 kB | README on viewports ≤ 640 px |
-| `readme-hero/hero-{light,dark}.svg`, `hero-stacked-{light,dark}.svg` | ~225 kB | Static figure: docs, slides, portal concept |
-| `build/readme-hero/*.png`, `*.webp` | — | Raster fallbacks (PyPI, social posts), built by `make_hero.py`, **git-ignored** |
+| `readme-hero/hero-{light,dark}.svg` | ~177 kB | README, desktop |
+| `readme-hero/hero-stacked-{light,dark}.svg` | ~178 kB | README on viewports ≤ 640 px |
 
-The raster fallbacks (formerly 4.5 MB of WebP and 1.2 MB of PNG in the tree) are not committed: they
-would stay in git history forever and the README does not use them. Attach them to a release or
-publish them with GitHub Pages when a host needs them.
+Regenerate with `.venv/bin/python docs/brand/scripts/make_hero.py`.
 
 ## The compact comparison
 
@@ -149,4 +116,4 @@ the CLI again.
 4. Copy `README.draft.md` to the repository root as `README.md` (its paths already assume the root).
 5. Push to a branch and check on github.com before merging: light and dark themes, a phone-width
    viewport (stacked hero), the repository home view and the blob view of `README.md` (relative
-   `srcset` paths), and that the animation plays once and the reduced-motion frame appears.
+   `srcset` paths).

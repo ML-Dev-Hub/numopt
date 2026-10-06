@@ -334,10 +334,8 @@ Never: parallax, floating gradients, animated backgrounds, count-up numbers, bou
 overshoot on data (the `--ease-spring` token is for UI affordances only, such as a toggle knob).
 
 **Reduced motion** (`prefers-reduced-motion: reduce`): duration tokens collapse to 0; the player shows
-the final step, paused, no autoplay or loop; Play advances in whole steps at ≤ 6 steps/s; the README
-animated SVG shows the static final frame (a CSS media query inside the SVG swaps the groups); the
-home hero does not cycle and renders each scene's final frame. The README hero itself plays once (about 9.5 s, every animation
-`fill="freeze"`), then holds a final frame identical to the static figure; reload replays it.
+the final step, paused, no autoplay or loop; Play advances in whole steps at ≤ 6 steps/s; the home
+hero does not cycle and renders each scene's final frame. The README hero is a static figure.
 
 ---
 
